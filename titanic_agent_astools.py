@@ -50,30 +50,15 @@ def execute_terminal(command: str) -> str:
     except subprocess.CalledProcessError as e:
         return f"Error executing command: {e.stderr}"
 
-
 ml_modeler = Agent(name="MachineLearningModeler", 
                 instructions="You are a machine learning modeler. You are given a dataset and you need to build a model to predict the target variable. \
                 You need to use the dataset to build a model that is able to predict the target variable with the highest accuracy. Begin with XGBoost and build from there.\
                 Try at least five variations to improve the accuracy of the model without overfitting.",
                 handoff_description="Agent for writing python code and building machine learning model",
-                tools=[save_file, execute_code])
-
-
-terminal_agent = Agent(name="TerminalAgent",
-              instructions="Your task is to install missing python packages. You have access to terminal. Only provide pip install commands. Any other commands are strictly forbidden.",
-              handoff_description="Agent for running installing python library by accessing terminal and running pip install commands",
-              tools=[execute_terminal])
-
-
-triage_agent = Agent(
-    name="Triage agent",
-    instructions="Handoff to the appropriate agent based on the language of the request.",
-    handoffs=[ml_modeler, terminal_agent],
-)
-
+                tools=[save_file, execute_code, execute_terminal])
 
 async def main():
-    result = Runner.run_streamed(triage_agent, input="Using the titanic_train.csv dataset, build a xgboost model to predict the target variable, Survived. \
+    result = Runner.run_streamed(ml_modeler, input="Using the titanic_train.csv dataset, build a xgboost model to predict the target variable, Survived. \
                                  Save the model to a file called titanic_model.pkl. Make predictions on the titanic_test.csv dataset and save the predictions to a file called titanic_predictions.csv."
                                  )
     async for event in result.stream_events():
