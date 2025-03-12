@@ -33,7 +33,6 @@ I'll write Python code to perform these tasks. Let's begin with loading and prep
 
 I'll write the full code for your local execution:
 
-```python
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder, StandardScaler
@@ -99,7 +98,7 @@ predictions_filename = 'titanic_predictions.csv'
 predictions_df.to_csv(predictions_filename, index=False)
 
 print("Model training complete and files saved.")
-```
+
 
 ### Instructions:
 
@@ -108,6 +107,7 @@ print("Model training complete and files saved.")
 3. **Execute the Script**: Run the script in a Python environment.
 
 This code loads, preprocesses the data, trains an XGBoost model, and saves the predictions as requested. Let me know if you need further adjustments!% 
+
 
 ```
 
